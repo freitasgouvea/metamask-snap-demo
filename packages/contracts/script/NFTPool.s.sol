@@ -5,18 +5,20 @@ import {Script, console2} from "forge-std/Script.sol";
 import {NFTPool} from "../src/NFTPool.sol";
 
 contract NFTPoolScript is Script {
-    // NFT address
-    address public NFTAddress = 0x0000000000000000000000000000000000000000;
+  // set NFT address
+  address public NFTAddress = 0x0000000000000000000000000000000000000000;
 
-    function setUp() public {}
+  function setUp() public {}
 
-    function run() public {
-      vm.startBroadcast();
+  function run() public {
+    vm.startBroadcast();
 
-      // Deploy one pool
-      NFTPool pool = new NFTPool();
+    // deploy NFT pool
+    NFTPool pool = new NFTPool();
 
-      // initialize the pool
-      pool.initialize(NFTAddress);
-    }
+    // initialize NFT pool
+    pool.initialize(NFTAddress);
+
+    vm.stopBroadcast();
+  }
 }
