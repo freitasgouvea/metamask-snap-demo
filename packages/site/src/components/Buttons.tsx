@@ -1,8 +1,8 @@
-import type { ComponentProps } from 'react';
+import { SetStateAction, useState, type ComponentProps } from 'react';
 import styled from 'styled-components';
 
 import { ReactComponent as FlaskFox } from '../assets/flask_fox.svg';
-import type { MetamaskState } from '../hooks';
+import { type MetamaskState } from '../hooks';
 import { shouldDisplayReconnectButton } from '../utils';
 
 const Link = styled.a`
@@ -98,6 +98,18 @@ export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
 export const SendHelloButton = (props: ComponentProps<typeof Button>) => {
   return <Button {...props}>Send message</Button>;
 };
+
+export const ApproveButton = (props: ComponentProps<typeof Button>) => {
+  return <Button {...props}>Approve</Button>;
+}
+
+export const DepositButton = (props: ComponentProps<typeof Button>) => {
+  return <Button {...props}>Deposit</Button>;
+}
+
+export const WithdrawButton = (props: ComponentProps<typeof Button>) => {
+  return <Button {...props}>Withdraw</Button>;
+}
 
 export const HeaderButtons = ({
   state,
