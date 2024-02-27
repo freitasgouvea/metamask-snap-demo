@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
+import Input from './Input';
 
 type CardProps = {
   content: {
     title?: string;
     description: ReactNode;
+    input?: string;
     button?: ReactNode;
   };
   disabled?: boolean;
@@ -49,11 +51,12 @@ const Description = styled.div`
 `;
 
 export const Card = ({ content, disabled = false, fullWidth }: CardProps) => {
-  const { title, description, button } = content;
+  const { title, description, button, input } = content;
   return (
     <CardWrapper fullWidth={fullWidth} disabled={disabled}>
       {title && <Title>{title}</Title>}
       <Description>{description}</Description>
+      {input && <Input placeholder={input} />}
       {button}
     </CardWrapper>
   );
