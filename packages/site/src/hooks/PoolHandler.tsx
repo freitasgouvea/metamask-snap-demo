@@ -46,13 +46,13 @@ export const PoolHandler = () => {
       return null;
     }
 
-    if (!poolContract.deposit) {
-      setError("Pool Contract does not have deposit method");
+    if (!poolContract.depositNFT) {
+      setError("Pool Contract does not have deposit NFT method");
       return null;
     }
 
     try {
-      const transaction = await poolContract.deposit(tokenId);
+      const transaction = await poolContract.depositNFT(tokenId);
       return transaction;
     } catch (e) {
       console.error("Error during deposit:", e);
@@ -69,13 +69,13 @@ export const PoolHandler = () => {
       return null;
     }
 
-    if (!poolContract.withdraw) {
-      setError("Pool Contract does not have withdraw method");
+    if (!poolContract.withdrawNFT) {
+      setError("Pool Contract does not have withdraw NFT method");
       return null;
     }
 
     try {
-      const transaction = await poolContract.withdraw(tokenId);
+      const transaction = await poolContract.withdrawNFT(tokenId);
       return transaction;
     } catch (e) {
       console.error("Error during withdraw:", e);
