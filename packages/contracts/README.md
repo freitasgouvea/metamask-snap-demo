@@ -1,3 +1,47 @@
+# NFT Pool Demo Contracts
+
+This repository contains the smart contracts for the NFT Pool Demo.
+
+This project uses [Foundry](https://book.getfoundry.sh/) to build, test and deploy the smart contracts and is set to interact with [Linea Network](https://docs.linea.build/) using [Infura](https://docs.infura.io/) as a RPC provider.
+
+## Deploy to Linea Network using Foundry and Infura
+
+Before do this you need to add your `INFURA_API_KEY` and `PRIVATE_KEY` to `.env` file. See the example in `.env.example` file.
+
+If you wanna to verify automaticaly your contracts, you need to add your `LINEASCAN_API_KEY` to `.env` file.
+
+Then run the following command to load the environment variables:
+
+```shell
+$ source .env
+```
+
+For more information about how to get your Infura API Key, please visit [Infura](https://infura.io/).
+
+Ensure you have tokens in your wallet in the network you are deploying to.
+
+If you need to get founds in Linea networks, please visit [Fund Your Account](https://docs.linea.build/use-mainnet/fund).
+
+### Deploy and Verify to Linea Mainnet
+
+```shell
+$ forge script --rpc-url linea-mainnet script/NFTPool.s.sol:NFTPoolScript --private-key $PRIVATE_KEY --evm-version london --broadcast --verify
+```
+
+### Deploy and Verify to Linea Testnet
+
+```shell
+forge script --rpc-url linea-testnet script/NFTPool.s.sol:NFTPoolScript --private-key $PRIVATE_KEY --evm-version london --broadcast --verify
+```
+
+### Linea EVM Compatibility
+
+At the moment (Feb 2024), Linea Network is compatible with London Hardfork (EIP-1559), so you can deploy your contracts to Linea using the London version of the EVM.
+
+Some features that was introduced after London Hardfork are not available in Linea Network, like the `PUSH0` opcode.
+
+To read more information about, please visit [Differences between Ethereum and Linea](https://docs.linea.build/build-on-linea/ethereum-differences).
+
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
@@ -63,24 +107,4 @@ $ cast <subcommand>
 $ forge --help
 $ anvil --help
 $ cast --help
-```
-
-## Deploy to Linea Network using Foundry and Infura
-
-Before do this you need to add your `INFURA_API_KEY` and `PRIVATE_KEY` to `.env` file. See the example in `.env.example` file.
-
-For more information about how to get your Infura API Key, please visit [Infura](https://infura.io/).
-
-Ensure you have tokens in your wallet in the network you are deploying to. If you need to get founds in Linea networks, please visit [Fund Your Account](https://docs.linea.build/use-mainnet/fund).
-
-### Deploy to Linea Mainnet
-
-```shell
-$ forge create --rpc-url linea-mainnet src/NFTPool.sol:NFTPoolScript --private-key $PRIVATE_KEY
-```
-
-### Deploy to Linea Testnet
-
-```shell
-$ forge create --rpc-url linea-testnet src/NFTPool.sol:NFTPoolScript --private-key $PRIVATE_KEY
 ```
