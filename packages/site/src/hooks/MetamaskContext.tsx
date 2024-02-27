@@ -9,6 +9,7 @@ export type MetamaskState = {
   isFlask: boolean;
   installedSnap?: Snap;
   error?: Error;
+  success?: string;
 };
 
 const initialState: MetamaskState = {
@@ -32,6 +33,7 @@ export enum MetamaskActions {
   SetSnapsDetected = 'SetSnapsDetected',
   SetError = 'SetError',
   SetIsFlask = 'SetIsFlask',
+  SetSuccess = 'SetSuccess',
 }
 
 const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
@@ -56,6 +58,11 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case MetamaskActions.SetSuccess:
+      return {
+        ...state,
+        success: action.payload,
       };
     default:
       return state;
@@ -115,10 +122,10 @@ export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
   }, [state.snapsDetected]);
 
   useEffect(() => {
-    let timeoutId: number;
+    let errorTimeoutId: number;
 
     if (state.error) {
-      timeoutId = window.setTimeout(() => {
+      errorTimeoutId = window.setTimeout(() => {
         dispatch({
           type: MetamaskActions.SetError,
           payload: undefined,
@@ -127,13 +134,36 @@ export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return () => {
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
+      if (errorTimeoutId) {
+        window.clearTimeout(errorTimeoutId);
       }
     };
   }, [state.error]);
 
   useEffect(() => {
+    let successTimeoutId: number;
+
+    if (state.success) {
+      successTimeoutId = window.setTimeout(() => {
+        dispatch({
+          type: MetamaskActions.SetSuccess,
+          payload: undefined,
+        });
+      }, 10000);
+    }
+
+    return () => {
+      if (successTimeoutId) {
+        window.clearTimeout(successTimeoutId);
+      }
+    };
+  }, [state.success]);
+
+  // Switch to Linea network
+  useEffect(() => {
+    /**
+     * Check if the current network is Linea and switch to it if it's not.
+     */
     const checkAndSwitchToLinea = async () => {
       const isLinea = await isLineaNetwork();
       if (!isLinea) {
