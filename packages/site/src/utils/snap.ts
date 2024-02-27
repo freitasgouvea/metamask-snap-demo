@@ -53,15 +53,46 @@ export const getSnap = async (version?: string): Promise<Snap | undefined> => {
   }
 };
 
-/**
- * Invoke the "hello" method from the example snap.
- */
-
-export const sendHello = async () => {
-  await window.ethereum.request({
-    method: 'wallet_invokeSnap',
-    params: { snapId: defaultSnapOrigin, request: { method: 'hello' } },
-  });
-};
-
 export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
+
+/**
+ * Invoke approve method from the NFT snap.
+ */
+export const approveNFTSnap = async (tokenName: string, tokenId: string) => {
+  const approveSnap = await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'approve', params: { tokenName, tokenId } },
+    },
+  });
+  return approveSnap;
+}
+
+/**
+ * Invoke deposit method from the Pool snap.
+ */
+export const depositNFTSnap = async (tokenName: string, tokenId: string) => {
+  const depositSnap = await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'deposit', params: { tokenName, tokenId } },
+    },
+  });
+  return depositSnap;
+}
+
+/**
+ * Invoke withdraw method from the Pool snap.
+ */
+export const withdrawNFTSnap = async (tokenName: string, tokenId: string) => {
+  const withdrawSnap = await window.ethereum.request({
+    method: 'wallet_invokeSnap',
+    params: {
+      snapId: defaultSnapOrigin,
+      request: { method: 'withdraw', params: { tokenName, tokenId } },
+    },
+  });
+  return withdrawSnap;
+}

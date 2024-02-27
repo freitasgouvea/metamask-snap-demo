@@ -1,5 +1,5 @@
 import type { OnRpcRequestHandler } from '@metamask/snaps-sdk';
-import { panel, text } from '@metamask/snaps-sdk';
+import { heading, panel, text } from '@metamask/snaps-sdk';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -16,18 +16,57 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
   request,
 }) => {
   switch (request.method) {
-    case 'hello':
+    case 'approve':
       return snap.request({
         method: 'snap_dialog',
         params: {
           type: 'confirmation',
           content: panel([
-            text(`Hello, **${origin}**!`),
-            text('This custom confirmation is just for display purposes.'),
+            heading('Approve NFT'),
+            text(`Hello!`),
             text(
-              'But you can edit the snap source code to make it do something, if you want to!',
+              `You will approve **NFT POOL** to spend your **${(request?.params as Record<string, any>)?.tokenName}** NFT with token ID **${(request?.params as Record<string, any>)?.tokenId}**.`
             ),
+            text(
+              `If you not use this approval in the next 10 minutes, we recommend you to revoke it for security reasons.`
+            )
           ]),
+        },
+      });
+    case 'deposit':
+      return snap.request({
+        method: 'snap_dialog',
+        params: {
+          type: 'prompt',
+          content: panel([
+            heading('Deposit NFT'),
+            text(`Hello!`),
+            text(
+              `You will deposit **${(request?.params as Record<string, any>)?.tokenName}** NFT with token ID **${(request?.params as Record<string, any>)?.tokenId}** to **NFT POOL**.`
+            ),
+            text(
+              `Confirm this action typing the NFT Id below.`
+            )
+          ]),
+          placeholder: 'NFT Id',
+        },
+      });
+    case 'withdraw':
+      return snap.request({
+        method: 'snap_dialog',
+        params: {
+          type: 'prompt',
+          content: panel([
+            heading('Withdraw NFT'),
+            text(`Hello!`),
+            text(
+              `You will withdraw **${(request?.params as Record<string, any>)?.tokenName}** NFT with token ID **${(request?.params as Record<string, any>)?.tokenId}** from **NFT POOL**.`
+            ),
+            text(
+              `Confirm this action typing the NFT Id below.`
+            )
+          ]),
+          placeholder: 'NFT Id',
         },
       });
     default:
