@@ -55,8 +55,8 @@ export const NFTHandler = () => {
       const transaction = await nftContract.approve(nftPoolAddress, 2);
       return transaction;
     } catch (e) {
-      console.error("Error during approval:", e);
-      setError("Error during approval");
+      console.error("Error during approve: ", e);
+      setError("Error during approve confirmation or transaction");
       return null;
     }
   }, [nftContract]);
