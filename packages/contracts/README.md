@@ -2,7 +2,14 @@
 
 This repository contains the smart contracts for the NFT Pool Demo.
 
-This project uses [Foundry](https://book.getfoundry.sh/) to build, test and deploy the smart contracts and is set to interact with [Linea Network](https://docs.linea.build/) using [Infura](https://docs.infura.io/) as a RPC provider.
+This project uses [Foundry](https://book.getfoundry.sh/) to build, test and deploy the smart contracts and is configured to interact with [Linea Network](https://docs.linea.build/) using [Infura](https://docs.infura.io/) as a RPC provider.
+
+## Demo Contracts Addresses
+
+### Linea Testnet
+
+-   NFT: [0xF678481Fab348F470Ef6e9a5f0c719D62bd736C0](https://goerli.lineascan.build/address/0xF678481Fab348F470Ef6e9a5f0c719D62bd736C0)
+-   NFTPool: [0xf6321ae199dfc9490e32e66c16418b92fe515294](https://goerli.lineascan.build/address/0xf6321ae199dfc9490e32e66c16418b92fe515294)
 
 ## Deploy to Linea Network using Foundry and Infura
 
@@ -42,7 +49,7 @@ Some features that was introduced after London Hardfork are not available in Lin
 
 To read more information about, please visit [Differences between Ethereum and Linea](https://docs.linea.build/build-on-linea/ethereum-differences).
 
-## Foundry
+## Foundry Commands
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
