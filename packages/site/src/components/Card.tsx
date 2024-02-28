@@ -11,6 +11,8 @@ type CardProps = {
   };
   disabled?: boolean;
   fullWidth?: boolean;
+  inputValue?: string;
+  setInputValue?: (value: string) => void;
 };
 
 const CardWrapper = styled.div<{
@@ -50,13 +52,19 @@ const Description = styled.div`
   margin-bottom: 2.4rem;
 `;
 
-export const Card = ({ content, disabled = false, fullWidth }: CardProps) => {
+export const Card = ({
+  content,
+  disabled = false,
+  fullWidth,
+  inputValue = '0',
+  setInputValue = () => {},
+}: CardProps) => {
   const { title, description, button, input } = content;
   return (
     <CardWrapper fullWidth={fullWidth} disabled={disabled}>
       {title && <Title>{title}</Title>}
       <Description>{description}</Description>
-      {input && <Input placeholder={input} />}
+      {input && <Input placeholder={input} value={inputValue} setValue={setInputValue} />}
       {button}
     </CardWrapper>
   );

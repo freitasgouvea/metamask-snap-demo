@@ -27,10 +27,11 @@ interface NumberInputProps {
   label?: string;
   max?: string;
   min?: string;
+  setValue: (value: string) => void;
 }
 
 const NumberInput: React.FC<NumberInputProps> = (props) => {
-  return <Input type="number" {...props} />;
+  return <Input type="number" {...props} onChange={ (e) => props.setValue(e.target.value) } />;
 };
 
 export default NumberInput;

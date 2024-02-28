@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -145,12 +145,14 @@ const Index = () => {
   };
 
   const { approve, error: approveError } = NFTHandler();
+  const [approveTokenId, setApproveTokenId] = useState<string>('');
 
-  const handleApproveClick = async (tokenId: string) => {
-    const snapApprove = await approveNFTSnap('DEMO', '2');
+  const handleApproveClick = async () => {
+    const snapApprove = await approveNFTSnap('DEMO', approveTokenId);
+
     if (snapApprove) {
       try {
-        const tx = await approve('2');
+        const tx = await approve(approveTokenId);
 
         if (tx.hash) {
           dispatch({
@@ -177,9 +179,12 @@ const Index = () => {
   };
 
   const { deposit, withdraw, error: poolError } = PoolHandler();
+  const [depositTokenId, setDepositTokenId] = useState<string>('');
+  const [withdrawTokenId, setWithdrawTokenId] = useState<string>('');
 
-  const handleDepositClick = async (tokenId: string) => {
-    const snapDeposit = await depositNFTSnap('DEMO', '2');
+  const handleDepositClick = async () => {
+    const snapDeposit = await depositNFTSnap('DEMO', depositTokenId);
+
     if (snapDeposit) {
       dispatch({
         type: MetamaskActions.SetSuccess,
@@ -189,7 +194,7 @@ const Index = () => {
           '...',
       });
       try {
-        const tx = await deposit('2');
+        const tx = await deposit(depositTokenId);
 
         if (tx.hash) {
           dispatch({
@@ -215,12 +220,12 @@ const Index = () => {
     }
   };
 
-  const handleWithdrawClick = async (tokenId: string) => {
-    const snapWithdraw = await withdrawNFTSnap('DEMO', '2');
+  const handleWithdrawClick = async () => {
+    const snapWithdraw = await withdrawNFTSnap('DEMO', withdrawTokenId);
 
-    if (snapWithdraw === tokenId) {
+    if (snapWithdraw) {
       try {
-        const tx = await withdraw('2');
+        const tx = await withdraw(withdrawTokenId);
 
         if (tx.hash) {
           dispatch({
@@ -296,12 +301,14 @@ const Index = () => {
             button: (
               <ApproveButton
                 onClick={handleApproveClick}
-                disabled={!state.installedSnap}
+                disabled={!state.installedSnap || approveTokenId === ''}
               />
             ),
-            input: 'NFT id',
+            input: 'NFT ID',
           }}
           disabled={!state.installedSnap}
+          inputValue={approveTokenId}
+          setInputValue={setApproveTokenId}
         />
         <Card
           content={{
@@ -311,12 +318,14 @@ const Index = () => {
             button: (
               <DepositButton
                 onClick={handleDepositClick}
-                disabled={!state.installedSnap}
+                disabled={!state.installedSnap || depositTokenId === ''}
               />
             ),
-            input: 'NFT id',
+            input: 'NFT ID',
           }}
           disabled={!state.installedSnap}
+          inputValue={depositTokenId}
+          setInputValue={setDepositTokenId}
         />
         <Card
           content={{
@@ -326,12 +335,14 @@ const Index = () => {
             button: (
               <WithdrawButton
                 onClick={handleWithdrawClick}
-                disabled={!state.installedSnap}
+                disabled={!state.installedSnap || withdrawTokenId === ''}
               />
             ),
-            input: 'NFT id',
+            input: 'NFT ID',
           }}
           disabled={!state.installedSnap}
+          inputValue={withdrawTokenId}
+          setInputValue={setWithdrawTokenId}
         />
         {/* {shouldDisplayReconnectButton(state.installedSnap) && (
           <Card
@@ -354,9 +365,13 @@ const Index = () => {
           <p>
             This example demonstrates how to use the MetaMask Snaps API to
             connect to and install a snap, and how to use the snap to send a
-            message to the MetaMask UI. Mint your DEMO NFT{' '}
-            <a href="" target="_blank" rel="noopener noreferrer">
-              here
+            message to the MetaMask UI. Request your DEMO NFT using {' '}
+            <a
+              href="https://goerli.lineascan.build/address/0x56F25c991cCcD6c2171F2c1BE190608ab1f09369#writeContract"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              request faucet
             </a>{' '}
             and access the{' '}
             <a
