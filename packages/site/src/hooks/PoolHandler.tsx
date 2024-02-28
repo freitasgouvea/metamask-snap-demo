@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BrowserProvider, Contract, ethers } from 'ethers';
 import { nftPoolAbi } from '../abis/nftPool.abi';
+import { nftPoolAddress } from '../config/addresses';
 
 export const PoolHandler = () => {
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [poolContract, setPoolContract] = useState<Contract | null>(null);
   const [error, setError] = useState('');
-
-  const nftPoolAddress = process.env.NFT_POOL_ADDRESS || '0xf6321ae199dfc9490e32e66c16418b92fe515294';
 
   // Initialize ethers provider
   useEffect(() => {

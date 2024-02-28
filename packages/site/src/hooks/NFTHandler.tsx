@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BrowserProvider, Contract, ethers } from 'ethers';
 import { erc721Abi } from '../abis/erc721.abi';
+import { nftAddress, nftPoolAddress } from '../config/addresses';
 
 export const NFTHandler = () => {
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
@@ -21,7 +22,6 @@ export const NFTHandler = () => {
   // Initialize NFT contract
   useEffect(() => {
     if (!provider) return;
-    const nftAddress = process.env.NFT_ADDRESS || '0xF678481Fab348F470Ef6e9a5f0c719D62bd736C0';
 
     const initializeContract = async () => {
       try {
@@ -51,7 +51,6 @@ export const NFTHandler = () => {
     }
 
     try {
-      const nftPoolAddress = process.env.NFT_POOL_ADDRESS || '0xf6321ae199dfc9490e32e66c16418b92fe515294';
       const transaction = await nftContract.approve(nftPoolAddress, 2);
       return transaction;
     } catch (e) {
