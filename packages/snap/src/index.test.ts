@@ -3,31 +3,90 @@ import { installSnap } from '@metamask/snaps-jest';
 import { panel, text } from '@metamask/snaps-sdk';
 
 describe('onRpcRequest', () => {
-  describe('hello', () => {
+  describe('approve', () => {
     it('shows a confirmation dialog', async () => {
       const { request } = await installSnap();
 
-      const origin = 'Jest';
       const response = request({
-        method: 'hello',
-        origin,
+        method: 'approve',
+        params: {
+          tokenName: 'NFT',
+          tokenId: '123',
+        },
       });
 
       const ui = await response.getInterface();
       expect(ui.type).toBe('confirmation');
       expect(ui).toRender(
         panel([
-          text(`Hello, **${origin}**!`),
-          text('This custom confirmation is just for display purposes.'),
-          text(
-            'But you can edit the snap source code to make it do something, if you want to!',
-          ),
+          text('Approve NFT'),
+          text(`Hello!`),
+          text(`You will approve **NFT POOL** to spend your **NFT** NFT with token ID **123**.`),
+          text(`If you not use this approval in the next 10 minutes, we recommend you to revoke it for security reasons.`),
         ]),
       );
 
       await ui.ok();
 
       expect(await response).toRespondWith(true);
+    });
+  });
+
+  describe('deposit', () => {
+    it('shows a prompt dialog', async () => {
+      const { request } = await installSnap();
+
+      const response = request({
+        method: 'deposit',
+        params: {
+          tokenName: 'NFT',
+          tokenId: '123',
+        },
+      });
+
+      const ui = await response.getInterface();
+      expect(ui.type).toBe('prompt');
+      expect(ui).toRender(
+        panel([
+          text('Deposit NFT'),
+          text(`Hello!`),
+          text(`You will deposit **NFT** NFT with token ID **123** to **NFT POOL**.`),
+          text(`Confirm this action typing the NFT Id below.`),
+        ]),
+      );
+
+      await ui.ok('123');
+
+      expect(await response).toRespondWith('123');
+    });
+  });
+
+  describe('withdraw', () => {
+    it('shows a prompt dialog', async () => {
+      const { request } = await installSnap();
+
+      const response = request({
+        method: 'withdraw',
+        params: {
+          tokenName: 'NFT',
+          tokenId: '123',
+        },
+      });
+
+      const ui = await response.getInterface();
+      expect(ui.type).toBe('prompt');
+      expect(ui).toRender(
+        panel([
+          text('Withdraw NFT'),
+          text(`Hello!`),
+          text(`You will withdraw **NFT** NFT with token ID **123** from **NFT POOL**.`),
+          text(`Confirm this action typing the NFT Id below.`),
+        ]),
+      );
+
+      await ui.ok('123');
+
+      expect(await response).toRespondWith('123');
     });
   });
 
