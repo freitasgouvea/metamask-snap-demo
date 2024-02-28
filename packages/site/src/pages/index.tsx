@@ -148,31 +148,51 @@ const Index = () => {
   const [approveTokenId, setApproveTokenId] = useState<string>('');
 
   const handleApproveClick = async () => {
-    const snapApprove = await approveNFTSnap('DEMO', approveTokenId);
+    try {
+      // Call the Snap function to initiate the approval process
+      const snapApprove = await approveNFTSnap('DEMO', approveTokenId);
 
-    if (snapApprove) {
-      try {
-        const tx = await approve(approveTokenId);
-
-        if (tx.hash) {
-          dispatch({
-            type: MetamaskActions.SetSuccess,
-            payload: '🚀 Approval sent with success, tx hash: ' + tx.hash,
-          });
-        }
-      } catch (error) {
+      if (snapApprove) {
+        // If Snap approval is successful, proceed with the transaction
+        await handleApproveTransaction();
+      } else {
+        // If Snap approval fails, dispatch an error message
         dispatch({
           type: MetamaskActions.SetError,
           payload: {
-            message: approveError,
+            message: 'User did not confirm the approval action',
           },
         });
       }
-    } else {
+    } catch (error) {
+      // Handle any errors that occur during the snap process
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: 'User not confirmed the approval action',
+          message: 'Error occurred during approval action',
+        },
+      });
+    }
+  };
+
+  const handleApproveTransaction = async () => {
+    try {
+      // Call the transaction function to send the approval
+      const tx = await approve(approveTokenId);
+
+      if (tx.hash) {
+        // If transaction is successful, dispatch a success message
+        dispatch({
+          type: MetamaskActions.SetSuccess,
+          payload: '🚀 Approval sent successfully, tx hash: ' + tx.hash,
+        });
+      }
+    } catch (error) {
+      // Handle any errors that occur during the transaction
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: approveError ?? 'Error occurred during approve transaction',
         },
       });
     }
@@ -183,69 +203,109 @@ const Index = () => {
   const [withdrawTokenId, setWithdrawTokenId] = useState<string>('');
 
   const handleDepositClick = async () => {
-    const snapDeposit = await depositNFTSnap('DEMO', depositTokenId);
+    try {
+      // Call the Snap function to initiate the deposit process
+      const snapDeposit = await depositNFTSnap('DEMO', depositTokenId);
 
-    if (snapDeposit) {
-      dispatch({
-        type: MetamaskActions.SetSuccess,
-        payload:
-          '✍️ User accepted terms of service. Signature hash: ' +
-          String(snapDeposit).substring(0, 48) +
-          '...',
-      });
-      try {
-        const tx = await deposit(depositTokenId);
-
-        if (tx.hash) {
-          dispatch({
-            type: MetamaskActions.SetSuccess,
-            payload: '🚀 Deposit sent with success, tx hash: ' + tx.hash,
-          });
-        }
-      } catch (error) {
+      if (snapDeposit) {
+        // If Snap deposit is successful, notify user and proceed with the transaction
+        dispatch({
+          type: MetamaskActions.SetSuccess,
+          payload:
+            '✍️ User accepted terms of service. Signature hash: ' +
+            String(snapDeposit).substring(0, 48) +
+            '...',
+        });
+        await handleDepositTransaction();
+      } else {
+        // If Snap deposit fails, dispatch an error message
         dispatch({
           type: MetamaskActions.SetError,
           payload: {
-            message: poolError,
+            message: 'User did not confirm the deposit action',
           },
         });
       }
-    } else {
+    } catch (error) {
+      // Handle any errors that occur during the snap process
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: 'User not signed the NFT Pool terms of service',
+          message: 'Error occurred during deposit action',
+        },
+      });
+    }
+  };
+
+  const handleDepositTransaction = async () => {
+    try {
+      // Call the transaction function to send the deposit
+      const tx = await deposit(depositTokenId);
+
+      if (tx.hash) {
+        // If transaction is successful, dispatch a success message
+        dispatch({
+          type: MetamaskActions.SetSuccess,
+          payload: '🚀 Deposit sent with success, tx hash: ' + tx.hash,
+        });
+      }
+    } catch (error) {
+      // Handle any errors that occur during the transaction
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: poolError ?? 'Error occurred during deposit transaction',
         },
       });
     }
   };
 
   const handleWithdrawClick = async () => {
-    const snapWithdraw = await withdrawNFTSnap('DEMO', withdrawTokenId);
+    try {
+      // Call the Snap function to initiate the withdraw process
+      const snapWithdraw = await withdrawNFTSnap('DEMO', withdrawTokenId);
 
-    if (snapWithdraw) {
-      try {
-        const tx = await withdraw(withdrawTokenId);
-
-        if (tx.hash) {
-          dispatch({
-            type: MetamaskActions.SetSuccess,
-            payload: '🚀 Withdraw sent with success, tx hash: ' + tx.hash,
-          });
-        }
-      } catch (error) {
+      if (snapWithdraw) {
+        // If Snap withdraw is successful, proceed with the transaction
+        await handleWithdrawTransaction();
+      } else {
+        // If Snap withdraw fails, dispatch an error message
         dispatch({
           type: MetamaskActions.SetError,
           payload: {
-            message: poolError,
+            message: 'User did not confirm the withdraw action',
           },
         });
       }
-    } else {
+    } catch (error) {
+      // Handle any errors that occur during the snap process
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: 'User not confirmed the withdraw action',
+          message: poolError ?? 'Error occurred during withdraw action',
+        },
+      });
+    }
+  };
+
+  const handleWithdrawTransaction = async () => {
+    try {
+      // Call the transaction function to send the withdraw
+      const tx = await withdraw(withdrawTokenId);
+
+      if (tx.hash) {
+        // If transaction is successful, dispatch a success message
+        dispatch({
+          type: MetamaskActions.SetSuccess,
+          payload: '🚀 Withdraw sent with success, tx hash: ' + tx.hash,
+        });
+      }
+    } catch (error) {
+      // Handle any errors that occur during the transaction
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: poolError ?? 'Error occurred during withdraw transaction',
         },
       });
     }
@@ -365,7 +425,7 @@ const Index = () => {
           <p>
             This example demonstrates how to use the MetaMask Snaps API to
             connect to and install a snap, and how to use the snap to send a
-            message to the MetaMask UI. Request your DEMO NFT using {' '}
+            message to the MetaMask UI. Request your DEMO NFT using{' '}
             <a
               href="https://goerli.lineascan.build/address/0x56F25c991cCcD6c2171F2c1BE190608ab1f09369#writeContract"
               target="_blank"

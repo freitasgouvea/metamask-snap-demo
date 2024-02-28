@@ -54,8 +54,8 @@ export const PoolHandler = () => {
       const transaction = await poolContract.depositNFT(tokenId);
       return transaction;
     } catch (e) {
-      console.error("Error during deposit:", e);
-      setError("Error during deposit");
+      console.error("Error during deposit: ", e);
+      setError("Error during deposit: " + (e as any).message);
       return null;
     }
   }, [poolContract]);
@@ -77,8 +77,8 @@ export const PoolHandler = () => {
       const transaction = await poolContract.withdrawNFT(tokenId);
       return transaction;
     } catch (e) {
-      console.error("Error during withdraw:", e);
-      setError("Error during withdraw");
+      console.error("Error during withdraw: ", e);
+      setError("Error during withdraw: " + (e as any).message);
       return null;
     }
   }, [poolContract]);

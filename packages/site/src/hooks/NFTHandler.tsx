@@ -6,7 +6,7 @@ import { nftAddress, nftPoolAddress } from '../config/addresses';
 export const NFTHandler = () => {
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [nftContract, setNftContract] = useState<Contract | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<any>('');
 
   // Initialize ethers provider
   useEffect(() => {
@@ -51,11 +51,11 @@ export const NFTHandler = () => {
     }
 
     try {
-      const transaction = await nftContract.approve(nftPoolAddress, 2);
+      const transaction = await nftContract.approve(nftPoolAddress, tokenId);
       return transaction;
     } catch (e) {
       console.error("Error during approve: ", e);
-      setError("Error during approve confirmation or transaction");
+      setError("Error during approve: " + (e as any).message);
       return null;
     }
   }, [nftContract]);
