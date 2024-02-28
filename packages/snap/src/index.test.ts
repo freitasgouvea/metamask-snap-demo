@@ -33,7 +33,7 @@ describe('onRpcRequest', () => {
   });
 
   describe('deposit', () => {
-    it('shows a prompt dialog', async () => {
+    it('shows a confirmation dialog', async () => {
       const { request } = await installSnap();
 
       const response = request({
@@ -41,23 +41,27 @@ describe('onRpcRequest', () => {
         params: {
           tokenName: 'NFT',
           tokenId: '123',
+          message: 'test message',
+          salt: '0xdeadbeef',
         },
       });
 
       const ui = await response.getInterface();
-      expect(ui.type).toBe('prompt');
+      expect(ui.type).toBe('confirmation');
       expect(ui).toRender(
         panel([
-          text('Deposit NFT'),
-          text(`Hello!`),
-          text(`You will deposit **NFT** NFT with token ID **123** to **NFT POOL**.`),
-          text(`Confirm this action typing the NFT Id below.`),
+          text('Terms of Service'),
+          text('By clicking "Approve" you agree to the terms of service from ***NFT POOL***:'),
+          text(`1 - You will deposit one NFT with token ID **123** from **NFT** Collection to the pool.`),
+          text(`2 - You will be able to withdraw one NFT from this pool at any time.`),
+          text(`3 - Once deposited, it is not guaranteed that you will be able to withdraw the same NFT you deposited.`),
+          text(`4 - The ***NFT POOL*** is not responsible for any loss of NFTs.`),
         ]),
       );
 
-      await ui.ok('123');
+      await ui.ok();
 
-      expect(await response).toRespondWith('123');
+      expect(await response).toBeTruthy();
     });
   });
 

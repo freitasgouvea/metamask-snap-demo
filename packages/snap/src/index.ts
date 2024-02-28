@@ -1,5 +1,9 @@
 import type { OnRpcRequestHandler } from '@metamask/snaps-sdk';
-import { heading, panel, text } from '@metamask/snaps-sdk';
+import { DialogType, heading, panel, text } from '@metamask/snaps-sdk';
+import { providerErrors } from '@metamask/rpc-errors';
+import { bytesToHex, stringToBytes } from '@metamask/utils';
+import { sign } from '@noble/bls12-381';
+import { getEntropy } from './utils';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
@@ -11,10 +15,7 @@ import { heading, panel, text } from '@metamask/snaps-sdk';
  * @returns The result of `snap_dialog`.
  * @throws If the request method is not valid for this snap.
  */
-export const onRpcRequest: OnRpcRequestHandler = async ({
-  origin,
-  request,
-}) => {
+export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
   switch (request.method) {
     case 'approve':
       return snap.request({
@@ -25,32 +26,60 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
             heading('Approve NFT'),
             text(`Hello!`),
             text(
-              `You will approve **NFT POOL** to spend your **${(request?.params as Record<string, any>)?.tokenName}** NFT with token ID **${(request?.params as Record<string, any>)?.tokenId}**.`
+              `You will approve **NFT POOL** to spend your **${
+                (request?.params as Record<string, any>)?.tokenName
+              }** NFT with token ID **${
+                (request?.params as Record<string, any>)?.tokenId
+              }**.`,
             ),
             text(
-              `If you not use this approval in the next 10 minutes, we recommend you to revoke it for security reasons.`
-            )
+              `If you not use this approval in the next 10 minutes, we recommend you to revoke it for security reasons.`,
+            ),
           ]),
         },
       });
     case 'deposit':
-      return snap.request({
+      const depositApproved = await snap.request({
         method: 'snap_dialog',
         params: {
-          type: 'prompt',
+          type: DialogType.Confirmation,
           content: panel([
-            heading('Deposit NFT'),
-            text(`Hello!`),
+            heading('Terms of Service'),
             text(
-              `You will deposit **${(request?.params as Record<string, any>)?.tokenName}** NFT with token ID **${(request?.params as Record<string, any>)?.tokenId}** to **NFT POOL**.`
+              'By clicking "Approve" you agree to the terms of service from ***NFT POOL***:',
             ),
             text(
-              `Confirm this action typing the NFT Id below.`
-            )
+              `1 - You will deposit one NFT with token ID **${
+                (request?.params as Record<string, any>)?.tokenId
+              }** from **${
+                (request?.params as Record<string, any>)?.tokenName
+              }** Collection to the pool.`,
+            ),
+            text(
+              `2 - You will be able to withdraw one NFT from this pool at any time.`,
+            ),
+            text(
+              `3 - Once deposited, it is not guaranteed that you will be able to withdraw the same NFT you deposited.`,
+            ),
+            text(
+              `4 - The ***NFT POOL*** is not responsible for any loss of NFTs.`,
+            ),
           ]),
-          placeholder: 'NFT Id',
         },
       });
+
+      if (!depositApproved) {
+        throw providerErrors.userRejectedRequest();
+      }
+
+      const privateKey = await getEntropy(
+        (request?.params as Record<string, any>).salt,
+      );
+      const newLocal = await sign(
+        stringToBytes((request?.params as Record<string, any>).message),
+        privateKey,
+      );
+      return bytesToHex(newLocal);
     case 'withdraw':
       return snap.request({
         method: 'snap_dialog',
@@ -60,11 +89,13 @@ export const onRpcRequest: OnRpcRequestHandler = async ({
             heading('Withdraw NFT'),
             text(`Hello!`),
             text(
-              `You will withdraw **${(request?.params as Record<string, any>)?.tokenName}** NFT with token ID **${(request?.params as Record<string, any>)?.tokenId}** from **NFT POOL**.`
+              `You will withdraw **${
+                (request?.params as Record<string, any>)?.tokenName
+              }** NFT with token ID **${
+                (request?.params as Record<string, any>)?.tokenId
+              }** from **NFT POOL**.`,
             ),
-            text(
-              `Confirm this action typing the NFT Id below.`
-            )
+            text(`Confirm this action typing the NFT Id below.`),
           ]),
           placeholder: 'NFT Id',
         },

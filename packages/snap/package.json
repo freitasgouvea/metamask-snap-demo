@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@metamask/snaps-sdk": "^2.1.0",
+    "@noble/bls12-381": "^1.2.0",
     "buffer": "^6.0.3"
   },
   "devDependencies": {

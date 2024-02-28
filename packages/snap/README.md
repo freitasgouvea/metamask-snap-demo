@@ -6,15 +6,21 @@ This snap demonstrates how to develop a snap with TypeScript.
 
 All snaps in this package are inside the `src/index.ts` file.
 
-### RPC Request Snap
+### RPC Requests Snap
 
 #### Approve
 
-This snap demonstrates how to use the `confirmation` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns a boolean value.
+This dialog  snap demonstrates how to use the `confirmation` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns a boolean value.
 
-#### Deposit and Withdraw
+#### Deposit
 
-These snaps demonstrate how to use the `prompt` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns the user input value.
+This dialog snap demonstrates ow to use `snap_getEntropy` JSON-RPC method to get entropy from the MetaMask extension, and use it to sign a message.
+
+This snap recieves the `tokenName`, `tokenId`, `message` and `salt` as inputs and returns the signed message.
+
+### Withdraw
+
+This dialog snaps demonstrate how to use the `prompt` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns the user input value.
 
 ## Testing
 

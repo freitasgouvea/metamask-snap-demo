@@ -151,7 +151,7 @@ const Index = () => {
     if (snapApprove) {
       try {
         const tx = await approve('2');
-        console.log(tx);
+
         if (tx.hash) {
           dispatch({
             type: MetamaskActions.SetSuccess,
@@ -170,7 +170,7 @@ const Index = () => {
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: 'User not aggred with the approval terms',
+          message: 'User not confirmed the approval action',
         },
       });
     }
@@ -181,9 +181,16 @@ const Index = () => {
   const handleDepositClick = async (tokenId: string) => {
     const snapDeposit = await depositNFTSnap('DEMO', '2');
     if (snapDeposit) {
+      dispatch({
+        type: MetamaskActions.SetSuccess,
+        payload:
+          '✍️ User accepted terms of service. Signature hash: ' +
+          String(snapDeposit).substring(0, 48) +
+          '...',
+      });
       try {
         const tx = await deposit('2');
-        console.log(tx);
+
         if (tx.hash) {
           dispatch({
             type: MetamaskActions.SetSuccess,
@@ -202,18 +209,19 @@ const Index = () => {
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: 'User not aggred with the deposit terms',
+          message: 'User not signed the NFT Pool terms of service',
         },
       });
     }
-  }
+  };
 
   const handleWithdrawClick = async (tokenId: string) => {
     const snapWithdraw = await withdrawNFTSnap('DEMO', '2');
-    if (snapWithdraw) {
+
+    if (snapWithdraw === tokenId) {
       try {
         const tx = await withdraw('2');
-        console.log(tx);
+
         if (tx.hash) {
           dispatch({
             type: MetamaskActions.SetSuccess,
@@ -232,11 +240,11 @@ const Index = () => {
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: 'User not aggred with the withdraw terms',
+          message: 'User not confirmed the withdraw action',
         },
       });
     }
-  }
+  };
 
   return (
     <Container>

@@ -10,6 +10,12 @@ const config: SnapConfig = {
   polyfills: {
     buffer: true,
   },
+  stats: {
+    buffer: false,
+    builtIns: {
+      ignore: ['crypto'],
+    },
+  },
 };
 
 export default config;
