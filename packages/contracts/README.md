@@ -8,8 +8,8 @@ This project uses [Foundry](https://book.getfoundry.sh/) to build, test and depl
 
 ### Linea Testnet
 
--   NFT: [0xF678481Fab348F470Ef6e9a5f0c719D62bd736C0](https://goerli.lineascan.build/address/0xF678481Fab348F470Ef6e9a5f0c719D62bd736C0)
--   NFTPool: [0xf6321ae199dfc9490e32e66c16418b92fe515294](https://goerli.lineascan.build/address/0xf6321ae199dfc9490e32e66c16418b92fe515294)
+-   NFT: [0x56F25c991cCcD6c2171F2c1BE190608ab1f09369](https://goerli.lineascan.build/address/0x56F25c991cCcD6c2171F2c1BE190608ab1f09369)
+-   NFTPool: [0x65356C52e55c9EBCDaeb5d9aCA15ff1E86f7669E](https://goerli.lineascan.build/address/0x65356C52e55c9EBCDaeb5d9aCA15ff1E86f7669E)
 
 ## Deploy to Linea Network using Foundry and Infura
 
@@ -31,11 +31,15 @@ If you need to get founds in Linea networks, please visit [Fund Your Account](ht
 
 ### Deploy and Verify to Linea Mainnet
 
+Before deploy to Linea Mainnet, update the script `NFTPool.s.sol` with the correct addresses of the NFT contract.
+
 ```shell
 $ forge script --rpc-url linea-mainnet script/NFTPool.s.sol:NFTPoolScript --private-key $PRIVATE_KEY --evm-version london --broadcast --verify
 ```
 
 ### Deploy and Verify to Linea Testnet
+
+Before deploy to Linea Mainnet, update the script `NFTPool.s.sol` with the correct addresses of the NFT contract.
 
 ```shell
 forge script --rpc-url linea-testnet script/NFTPool.s.sol:NFTPoolScript --private-key $PRIVATE_KEY --evm-version london --broadcast --verify

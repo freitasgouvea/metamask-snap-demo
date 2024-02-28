@@ -70,7 +70,7 @@ contract NFTPool is Ownable, Pausable, ReentrancyGuard {
     require(NFTBalances[msg.sender] != 0, "NFTPool: sender must have a NFT deposited");
     require(IERC721(nft).ownerOf(_tokenId) == address(this), "NFTPool: contract must be the owner of the NFT");
 
-    IERC721(nft).transferFrom(address(this), msg.sender, NFTBalances[msg.sender]);
+    IERC721(nft).transferFrom(address(this), msg.sender, _tokenId);
     NFTBalances[msg.sender] = NFTBalances[msg.sender] - 1;
 
     emit Withdraw(nft, msg.sender, _tokenId);

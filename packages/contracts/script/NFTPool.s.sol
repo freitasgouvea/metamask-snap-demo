@@ -6,7 +6,7 @@ import {NFTPool} from "../src/NFTPool.sol";
 
 contract NFTPoolScript is Script {
   // set NFT address, this is linea testnet test NFT address
-  address public NFTAddress = 0xF678481Fab348F470Ef6e9a5f0c719D62bd736C0;
+  address public NFTAddress = 0x56F25c991cCcD6c2171F2c1BE190608ab1f09369;
 
   function setUp() public {}
 
