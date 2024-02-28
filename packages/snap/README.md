@@ -10,7 +10,7 @@ All snaps in this package are inside the `src/index.ts` file.
 
 #### Approve
 
-This dialog  snap demonstrates how to use the `confirmation` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns a boolean value.
+This dialog snap demonstrates how to use the `confirmation` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns a boolean value.
 
 #### Deposit
 

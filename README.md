@@ -1,16 +1,36 @@
-# @metamask/template-snap-monorepo
+# Metamask Snap Demo
 
-This repository demonstrates how to develop a snap with TypeScript. For detailed
-instructions, see [the MetaMask documentation](https://docs.metamask.io/guide/snaps.html#serving-a-snap-to-your-local-environment).
+This repository is a fork of the [MetaMask template-snap-monorepo](https://github.com/MetaMask/template-snap-monorepo) and contains a demo application of a NFT Pool using the following technologies:
 
-MetaMask Snaps is a system that allows anyone to safely expand the capabilities
-of MetaMask. A _snap_ is a program that we run in an isolated environment that
-can customize the wallet experience.
+- [Linea Network](https://docs.linea.build/)
+- [Infura](https://docs.infura.io/)
+- [Metamask SDK](https://metamask.io/sdk/)
+- [Metamask Snaps](https://metamask.io/snaps/)
+- [Foundry](https://book.getfoundry.sh/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
 
-## Snaps is pre-release software
+## Packages
 
-To interact with (your) Snaps, you will need to install [MetaMask Flask](https://metamask.io/flask/),
-a canary distribution for developers that provides access to upcoming features.
+### contracts
+
+This package contains the smart contracts for the NFT Pool Demo and uses [Foundry](https://book.getfoundry.sh/) to build, test and deploy the smart contracts and is configured to interact with [Linea Network](https://docs.linea.build/) using [Infura](https://docs.infura.io/) as a RPC provider.
+
+See full details in [contracts/README.md](./packages/contracts/README.md)
+
+### site
+
+Contains the frontend application for the demo snap and was built using [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/)
+
+Has a set of [hooks](./packages/site/src/hooks) built to easily instantiate MetaMask wallet and interact with smart contracts deployed on the Linea Network. Also has a [snap file](./packages/site/src/utils/snap.tsx) to show how to integrate the frontend application with the snap.
+
+See full details in [site/README.md](./packages/site/README.md)
+
+### snap
+
+This package was built using [TypeScript](https://www.typescriptlang.org/) and contains the snaps for the NFT Pool Demo.
+
+See full details in [snap/README.md](./packages/snap/README.md)
 
 ## Getting Started
 
