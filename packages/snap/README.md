@@ -1,8 +1,20 @@
-# TypeScript Example Snap
+# NFT Pool Example Snaps
 
-This snap demonstrates how to develop a snap with TypeScript. It is a simple
-snap that displays a confirmation dialog when the `hello` JSON-RPC method is
-called.
+This snap demonstrates how to develop a snap with TypeScript.
+
+## Snaps in this package
+
+All snaps in this package are inside the `src/index.ts` file.
+
+### RPC Request Snap
+
+#### Approve
+
+This snap demonstrates how to use the `confirmation` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns a boolean value.
+
+#### Deposit and Withdraw
+
+These snaps demonstrate how to use the `prompt` type of snap, recieve the `tokenName` and `tokenId` as inputs and returns the user input value.
 
 ## Testing
 
