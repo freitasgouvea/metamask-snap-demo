@@ -4,27 +4,32 @@ import styled from 'styled-components';
 import {
   ConnectButton,
   InstallFlaskButton,
-  ReconnectButton,
-  SendHelloButton,
+  // ReconnectButton,
   Card,
+  DepositButton,
+  WithdrawButton,
+  ApproveButton,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
-import { MetamaskActions, MetaMaskContext } from '../hooks';
+import { MetamaskActions, MetaMaskContext, NFTHandler } from '../hooks';
 import {
+  approveNFTSnap,
   connectSnap,
+  depositNFTSnap,
   getSnap,
   isLocalSnap,
-  sendHello,
-  shouldDisplayReconnectButton,
+  withdrawNFTSnap,
+  // shouldDisplayReconnectButton,
 } from '../utils';
+import PoolHandler from '../hooks/PoolHandler';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
-  margin-top: 7.6rem;
-  margin-bottom: 7.6rem;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
   ${({ theme }) => theme.mediaQueries.small} {
     padding-left: 2.4rem;
     padding-right: 2.4rem;
@@ -59,7 +64,7 @@ const CardContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  max-width: 64.8rem;
+  max-width: 100rem;
   width: 100%;
   height: 100%;
   margin-top: 1.5rem;
@@ -72,7 +77,6 @@ const Notice = styled.div`
   border-radius: ${({ theme }) => theme.radii.default};
   padding: 2.4rem;
   margin-top: 2.4rem;
-  max-width: 60rem;
   width: 100%;
 
   & > * {
@@ -90,9 +94,25 @@ const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.error?.alternative};
   border-radius: ${({ theme }) => theme.radii.default};
   padding: 2.4rem;
-  margin-bottom: 2.4rem;
   margin-top: 2.4rem;
-  max-width: 60rem;
+  max-width: 90rem;
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.small} {
+    padding: 1.6rem;
+    margin-bottom: 1.2rem;
+    margin-top: 1.2rem;
+    max-width: 100%;
+  }
+`;
+
+const SuccessMessage = styled.div`
+  background-color: ${({ theme }) => theme.colors.success?.muted};
+  border: 1px solid ${({ theme }) => theme.colors.success?.default};
+  color: ${({ theme }) => theme.colors.success?.alternative};
+  border-radius: ${({ theme }) => theme.radii.default};
+  padding: 2.4rem;
+  margin-top: 2.4rem;
+  max-width: 90rem;
   width: 100%;
   ${({ theme }) => theme.mediaQueries.small} {
     padding: 1.6rem;
@@ -124,29 +144,115 @@ const Index = () => {
     }
   };
 
-  const handleSendHelloClick = async () => {
-    try {
-      await sendHello();
-    } catch (error) {
-      console.error(error);
-      dispatch({ type: MetamaskActions.SetError, payload: error });
+  const { approve, error: approveError } = NFTHandler();
+
+  const handleApproveClick = async (tokenId: string) => {
+    const snapApprove = await approveNFTSnap('DEMO', '2');
+    if (snapApprove) {
+      try {
+        const tx = await approve('2');
+        console.log(tx);
+        if (tx.hash) {
+          dispatch({
+            type: MetamaskActions.SetSuccess,
+            payload: '🚀 Approval sent with success, tx hash: ' + tx.hash,
+          });
+        }
+      } catch (error) {
+        dispatch({
+          type: MetamaskActions.SetError,
+          payload: {
+            message: approveError,
+          },
+        });
+      }
+    } else {
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: 'User not aggred with the approval terms',
+        },
+      });
     }
   };
+
+  const { deposit, withdraw, error: poolError } = PoolHandler();
+
+  const handleDepositClick = async (tokenId: string) => {
+    const snapDeposit = await depositNFTSnap('DEMO', '2');
+    if (snapDeposit) {
+      try {
+        const tx = await deposit('2');
+        console.log(tx);
+        if (tx.hash) {
+          dispatch({
+            type: MetamaskActions.SetSuccess,
+            payload: '🚀 Deposit sent with success, tx hash: ' + tx.hash,
+          });
+        }
+      } catch (error) {
+        dispatch({
+          type: MetamaskActions.SetError,
+          payload: {
+            message: poolError,
+          },
+        });
+      }
+    } else {
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: 'User not aggred with the deposit terms',
+        },
+      });
+    }
+  }
+
+  const handleWithdrawClick = async (tokenId: string) => {
+    const snapWithdraw = await withdrawNFTSnap('DEMO', '2');
+    if (snapWithdraw) {
+      try {
+        const tx = await withdraw('2');
+        console.log(tx);
+        if (tx.hash) {
+          dispatch({
+            type: MetamaskActions.SetSuccess,
+            payload: '🚀 Withdraw sent with success, tx hash: ' + tx.hash,
+          });
+        }
+      } catch (error) {
+        dispatch({
+          type: MetamaskActions.SetError,
+          payload: {
+            message: poolError,
+          },
+        });
+      }
+    } else {
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: 'User not aggred with the withdraw terms',
+        },
+      });
+    }
+  }
 
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        Welcome to <Span>NFT Pool</Span>
       </Heading>
       <Subtitle>
-        Get started by editing <code>src/index.ts</code>
+        Discover the power of <Span>SNAPS</Span>
       </Subtitle>
+      {state.error && (
+        <ErrorMessage>
+          <b>An error happened:</b> {state.error.message}
+        </ErrorMessage>
+      )}
+      {state.success && <SuccessMessage>{state.success}</SuccessMessage>}
       <CardContainer>
-        {state.error && (
-          <ErrorMessage>
-            <b>An error happened:</b> {state.error.message}
-          </ErrorMessage>
-        )}
         {!isMetaMaskReady && (
           <Card
             content={{
@@ -155,7 +261,7 @@ const Index = () => {
                 'Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.',
               button: <InstallFlaskButton />,
             }}
-            fullWidth
+            fullWidth={true}
           />
         )}
         {!state.installedSnap && (
@@ -163,7 +269,7 @@ const Index = () => {
             content={{
               title: 'Connect',
               description:
-                'Get started by connecting to and installing the example snap.',
+                'Connect your Metamask wallet to access the SNAPS and recieve notifications about trending topics and updates from this pool.',
               button: (
                 <ConnectButton
                   onClick={handleConnectClick}
@@ -172,14 +278,59 @@ const Index = () => {
               ),
             }}
             disabled={!isMetaMaskReady}
+            fullWidth={true}
           />
         )}
-        {shouldDisplayReconnectButton(state.installedSnap) && (
+        <Card
+          content={{
+            title: 'Approve NFT',
+            description: 'Approve your DEMO NFT to be deposited into the pool.',
+            button: (
+              <ApproveButton
+                onClick={handleApproveClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+            input: 'NFT id',
+          }}
+          disabled={!state.installedSnap}
+        />
+        <Card
+          content={{
+            title: 'Deposit NFT',
+            description:
+              'Deposit your DEMO NFT into the pool to see the snap in action.',
+            button: (
+              <DepositButton
+                onClick={handleDepositClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+            input: 'NFT id',
+          }}
+          disabled={!state.installedSnap}
+        />
+        <Card
+          content={{
+            title: 'Withdraw NFT',
+            description:
+              'Withdraw your DEMO NFT from the pool to see the snap in action.',
+            button: (
+              <WithdrawButton
+                onClick={handleWithdrawClick}
+                disabled={!state.installedSnap}
+              />
+            ),
+            input: 'NFT id',
+          }}
+          disabled={!state.installedSnap}
+        />
+        {/* {shouldDisplayReconnectButton(state.installedSnap) && (
           <Card
             content={{
-              title: 'Reconnect',
+              title: 'Subscrible to NFT Pool',
               description:
-                'While connected to a local running snap this button will always be displayed in order to update the snap if a change is made.',
+                'Connect your Metamask wallet to recieve notifications about trending topics and updates from this pool.',
               button: (
                 <ReconnectButton
                   onClick={handleConnectClick}
@@ -188,33 +339,26 @@ const Index = () => {
               ),
             }}
             disabled={!state.installedSnap}
+            fullWidth={true}
           />
-        )}
-        <Card
-          content={{
-            title: 'Send Hello message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
-            button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
-                disabled={!state.installedSnap}
-              />
-            ),
-          }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            isMetaMaskReady &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
-        />
+        )} */}
         <Notice>
           <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
+            This example demonstrates how to use the MetaMask Snaps API to
+            connect to and install a snap, and how to use the snap to send a
+            message to the MetaMask UI. Mint your DEMO NFT{' '}
+            <a href="" target="_blank" rel="noopener noreferrer">
+              here
+            </a>{' '}
+            and access the{' '}
+            <a
+              href="https://github.com/freitasgouvea/metamask-snap-demo"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github repository
+            </a>{' '}
+            for more information.
           </p>
         </Notice>
       </CardContainer>
