@@ -10,6 +10,7 @@ module.exports = {
   rules: {
     'no-lonely-if': 'off',
     'no-case-declarations': 'off',
+    'require-unicode-regexp': 'off',
   },
 
   overrides: [
