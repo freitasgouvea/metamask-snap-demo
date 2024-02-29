@@ -70,7 +70,7 @@ export const isFlask = async () => {
 };
 
 /**
- * Detect if the wallet is connected to the Linea network
+ * Detect if the wallet is connected to the Linea network.
  *
  * @returns True if the wallet is connected to the Linea network, false otherwise.
  */
@@ -86,10 +86,10 @@ export const isLineaNetwork = async () => {
   } catch {
     return false;
   }
-}
+};
 
 /**
- * Switch the wallet to the Linea network
+ * Switch the wallet to the Linea network.
  *
  * @returns True if the wallet is successfully switched to the Linea network, false otherwise.
  */
@@ -103,24 +103,31 @@ export const switchToLineaNetwork = async () => {
     if (provider.request) {
       await provider.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: chainId }],
+        params: [{ chainId }],
       });
     } else {
-      // If wallet_switchEthereumChain is not available, prompt the user to switch manually
-      if (confirm('Please switch your network to Linea testnet in Metamask settings.')) {
+      // Fallback to wallet_addEthereumChain method
+      if (
+        // eslint-disable-next-line no-alert
+        confirm(
+          'Please switch your network to Linea testnet in Metamask settings.',
+        )
+      ) {
         await provider.request({
           method: 'wallet_addEthereumChain',
-          params: [{
-            chainId: chainId,
-            rpcUrl: 'https://rpc.goerli.linea.build',
-            chainName: 'Linea Testnet',
-            nativeCurrency: {
-              name: 'Linea',
-              symbol: 'LNE',
-              decimals: 18,
+          params: [
+            {
+              chainId,
+              rpcUrl: 'https://rpc.goerli.linea.build',
+              chainName: 'Linea Testnet',
+              nativeCurrency: {
+                name: 'Linea',
+                symbol: 'LNE',
+                decimals: 18,
+              },
+              blockExplorerUrls: ['https://goerli.lineascan.build/'],
             },
-            blockExplorerUrls: ['https://goerli.lineascan.build/'],
-          }],
+          ],
         });
       } else {
         return false; // User canceled network switch
@@ -132,4 +139,4 @@ export const switchToLineaNetwork = async () => {
     console.error('Error switching to Linea network:', error);
     return false;
   }
-}
+};

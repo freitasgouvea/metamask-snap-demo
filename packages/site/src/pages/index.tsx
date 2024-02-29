@@ -1,3 +1,4 @@
+import type { Transaction } from 'ethers';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +12,12 @@ import {
   ApproveButton,
 } from '../components';
 import { defaultSnapOrigin } from '../config';
-import { MetamaskActions, MetaMaskContext, NFTHandler } from '../hooks';
+import {
+  MetamaskActions,
+  MetaMaskContext,
+  NFTHandler,
+  PoolHandler,
+} from '../hooks';
 import {
   approveNFTSnap,
   connectSnap,
@@ -21,7 +27,6 @@ import {
   withdrawNFTSnap,
   // shouldDisplayReconnectButton,
 } from '../utils';
-import PoolHandler from '../hooks/PoolHandler';
 
 const Container = styled.div`
   display: flex;
@@ -147,6 +152,29 @@ const Index = () => {
   const { approve, error: approveError } = NFTHandler();
   const [approveTokenId, setApproveTokenId] = useState<string>('');
 
+  const handleApproveTransaction = async () => {
+    try {
+      // Call the transaction function to send the approval
+      const tx: Transaction = await approve(approveTokenId);
+
+      if (tx.hash) {
+        // If transaction is successful, dispatch a success message
+        dispatch({
+          type: MetamaskActions.SetSuccess,
+          payload: `🚀 Approval sent successfully, tx hash: ${tx.hash}`,
+        });
+      }
+    } catch (error) {
+      // Handle any errors that occur during the transaction
+      dispatch({
+        type: MetamaskActions.SetError,
+        payload: {
+          message: approveError ?? 'Error occurred during approve transaction',
+        },
+      });
+    }
+  };
+
   const handleApproveClick = async () => {
     try {
       // Call the Snap function to initiate the approval process
@@ -175,16 +203,20 @@ const Index = () => {
     }
   };
 
-  const handleApproveTransaction = async () => {
+  const { deposit, withdraw, error: poolError } = PoolHandler();
+  const [depositTokenId, setDepositTokenId] = useState<string>('');
+  const [withdrawTokenId, setWithdrawTokenId] = useState<string>('');
+
+  const handleDepositTransaction = async () => {
     try {
-      // Call the transaction function to send the approval
-      const tx = await approve(approveTokenId);
+      // Call the transaction function to send the deposit
+      const tx: Transaction = await deposit(depositTokenId);
 
       if (tx.hash) {
         // If transaction is successful, dispatch a success message
         dispatch({
           type: MetamaskActions.SetSuccess,
-          payload: '🚀 Approval sent successfully, tx hash: ' + tx.hash,
+          payload: `🚀 Deposit sent with success, tx hash: ${tx.hash}`,
         });
       }
     } catch (error) {
@@ -192,15 +224,11 @@ const Index = () => {
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: approveError ?? 'Error occurred during approve transaction',
+          message: poolError ?? 'Error occurred during deposit transaction',
         },
       });
     }
   };
-
-  const { deposit, withdraw, error: poolError } = PoolHandler();
-  const [depositTokenId, setDepositTokenId] = useState<string>('');
-  const [withdrawTokenId, setWithdrawTokenId] = useState<string>('');
 
   const handleDepositClick = async () => {
     try {
@@ -211,10 +239,9 @@ const Index = () => {
         // If Snap deposit is successful, notify user and proceed with the transaction
         dispatch({
           type: MetamaskActions.SetSuccess,
-          payload:
-            '✍️ User accepted terms of service. Signature hash: ' +
-            String(snapDeposit).substring(0, 48) +
-            '...',
+          payload: `✍️ User accepted terms of service. Signature hash: ${String(
+            snapDeposit,
+          ).substring(0, 48)}...`,
         });
         await handleDepositTransaction();
       } else {
@@ -237,16 +264,16 @@ const Index = () => {
     }
   };
 
-  const handleDepositTransaction = async () => {
+  const handleWithdrawTransaction = async () => {
     try {
-      // Call the transaction function to send the deposit
-      const tx = await deposit(depositTokenId);
+      // Call the transaction function to send the withdraw
+      const tx: Transaction = await withdraw(withdrawTokenId);
 
       if (tx.hash) {
         // If transaction is successful, dispatch a success message
         dispatch({
           type: MetamaskActions.SetSuccess,
-          payload: '🚀 Deposit sent with success, tx hash: ' + tx.hash,
+          payload: `🚀 Withdraw sent with success, tx hash: ${tx.hash}`,
         });
       }
     } catch (error) {
@@ -254,7 +281,7 @@ const Index = () => {
       dispatch({
         type: MetamaskActions.SetError,
         payload: {
-          message: poolError ?? 'Error occurred during deposit transaction',
+          message: poolError ?? 'Error occurred during withdraw transaction',
         },
       });
     }
@@ -283,29 +310,6 @@ const Index = () => {
         type: MetamaskActions.SetError,
         payload: {
           message: poolError ?? 'Error occurred during withdraw action',
-        },
-      });
-    }
-  };
-
-  const handleWithdrawTransaction = async () => {
-    try {
-      // Call the transaction function to send the withdraw
-      const tx = await withdraw(withdrawTokenId);
-
-      if (tx.hash) {
-        // If transaction is successful, dispatch a success message
-        dispatch({
-          type: MetamaskActions.SetSuccess,
-          payload: '🚀 Withdraw sent with success, tx hash: ' + tx.hash,
-        });
-      }
-    } catch (error) {
-      // Handle any errors that occur during the transaction
-      dispatch({
-        type: MetamaskActions.SetError,
-        payload: {
-          message: poolError ?? 'Error occurred during withdraw transaction',
         },
       });
     }

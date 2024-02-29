@@ -7,6 +7,11 @@ module.exports = {
 
   extends: ['@metamask/eslint-config'],
 
+  rules: {
+    'no-lonely-if': 'off',
+    'no-case-declarations': 'off',
+  },
+
   overrides: [
     {
       files: ['*.js'],

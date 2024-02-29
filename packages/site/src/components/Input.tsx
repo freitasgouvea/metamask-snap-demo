@@ -21,17 +21,21 @@ const Input = styled.input`
   }
 `;
 
-interface NumberInputProps {
+type CustomInputProps = {
   placeholder?: string;
   value?: string;
   label?: string;
   max?: string;
   min?: string;
   setValue: (value: string) => void;
-}
-
-const NumberInput: React.FC<NumberInputProps> = (props) => {
-  return <Input type="number" {...props} onChange={ (e) => props.setValue(e.target.value) } />;
 };
 
-export default NumberInput;
+export const CustomInput: React.FC<CustomInputProps> = (props) => {
+  return (
+    <Input
+      type="number"
+      {...props}
+      onChange={(eventInput) => props.setValue(eventInput.target.value)}
+    />
+  );
+};

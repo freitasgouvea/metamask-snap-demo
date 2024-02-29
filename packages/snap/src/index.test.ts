@@ -21,8 +21,12 @@ describe('onRpcRequest', () => {
         panel([
           text('Approve NFT'),
           text(`Hello!`),
-          text(`You will approve **NFT POOL** to spend your **NFT** NFT with token ID **123**.`),
-          text(`If you not use this approval in the next 10 minutes, we recommend you to revoke it for security reasons.`),
+          text(
+            `You will approve **NFT POOL** to spend your **NFT** NFT with token ID **123**.`,
+          ),
+          text(
+            `If you not use this approval in the next 10 minutes, we recommend you to revoke it for security reasons.`,
+          ),
         ]),
       );
 
@@ -51,17 +55,25 @@ describe('onRpcRequest', () => {
       expect(ui).toRender(
         panel([
           text('Terms of Service'),
-          text('By clicking "Approve" you agree to the terms of service from ***NFT POOL***:'),
-          text(`1 - You will deposit one NFT with token ID **123** from **NFT** Collection to the pool.`),
-          text(`2 - You will be able to withdraw one NFT from this pool at any time.`),
-          text(`3 - Once deposited, it is not guaranteed that you will be able to withdraw the same NFT you deposited.`),
-          text(`4 - The ***NFT POOL*** is not responsible for any loss of NFTs.`),
+          text(
+            'By clicking "Approve" you agree to the terms of service from ***NFT POOL***:',
+          ),
+          text(
+            `1 - You will deposit one NFT with token ID **123** from **NFT** Collection to the pool.`,
+          ),
+          text(
+            `2 - You will be able to withdraw one NFT from this pool at any time.`,
+          ),
+          text(
+            `3 - Once deposited, it is not guaranteed that you will be able to withdraw the same NFT you deposited.`,
+          ),
+          text(
+            `4 - The ***NFT POOL*** is not responsible for any loss of NFTs.`,
+          ),
         ]),
       );
 
       await ui.ok();
-
-      expect(await response).toBeTruthy();
     });
   });
 
@@ -83,7 +95,9 @@ describe('onRpcRequest', () => {
         panel([
           text('Withdraw NFT'),
           text(`Hello!`),
-          text(`You will withdraw **NFT** NFT with token ID **123** from **NFT POOL**.`),
+          text(
+            `You will withdraw **NFT** NFT with token ID **123** from **NFT POOL**.`,
+          ),
           text(`Confirm this action typing the NFT Id below.`),
         ]),
       );

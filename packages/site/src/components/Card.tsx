@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
-import Input from './Input';
+
+import { CustomInput } from './Input';
 
 type CardProps = {
   content: {
@@ -57,14 +58,21 @@ export const Card = ({
   disabled = false,
   fullWidth,
   inputValue = '0',
-  setInputValue = () => {},
+  setInputValue,
 }: CardProps) => {
   const { title, description, button, input } = content;
   return (
     <CardWrapper fullWidth={fullWidth} disabled={disabled}>
       {title && <Title>{title}</Title>}
       <Description>{description}</Description>
-      {input && <Input placeholder={input} value={inputValue} setValue={setInputValue} />}
+      {input && (
+        <CustomInput
+          placeholder={input}
+          value={inputValue}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          setValue={setInputValue ?? (() => {})}
+        />
+      )}
       {button}
     </CardWrapper>
   );

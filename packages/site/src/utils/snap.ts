@@ -59,7 +59,7 @@ export const isLocalSnap = (snapId: string) => snapId.startsWith('local:');
  * Invoke approve method from the NFT snap.
  * @param tokenName - The name of the token.
  * @param tokenId - The ID of the token.
- * @returns boolean indicating if the user approved the dialog.
+ * @returns Boolean indicating if the user approved the dialog.
  */
 export const approveNFTSnap = async (tokenName: string, tokenId: string) => {
   const approveSnap = await window.ethereum.request({
@@ -70,13 +70,13 @@ export const approveNFTSnap = async (tokenName: string, tokenId: string) => {
     },
   });
   return approveSnap;
-}
+};
 
 /**
  * Invoke deposit method from the Pool snap.
  * @param tokenName - The name of the token.
  * @param tokenId - The ID of the token.
- * @returns string hash of the signed message.
+ * @returns String hash of the signed message.
  */
 export const depositNFTSnap = async (tokenName: string, tokenId: string) => {
   const message = `I agrree with the terms of service and deposit NFT ${tokenName} ID ${tokenId} to the pool.`;
@@ -86,17 +86,20 @@ export const depositNFTSnap = async (tokenName: string, tokenId: string) => {
     method: 'wallet_invokeSnap',
     params: {
       snapId: defaultSnapOrigin,
-      request: { method: 'deposit', params: { tokenName, tokenId, message, salt } },
+      request: {
+        method: 'deposit',
+        params: { tokenName, tokenId, message, salt },
+      },
     },
   });
   return depositSnap;
-}
+};
 
 /**
  * Invoke withdraw method from the Pool snap.
  * @param tokenName - The name of the token.
  * @param tokenId - The ID of the token.
- * @returns string value of user input
+ * @returns String value of user input.
  */
 export const withdrawNFTSnap = async (tokenName: string, tokenId: string) => {
   const withdrawSnap = await window.ethereum.request({
@@ -107,4 +110,4 @@ export const withdrawNFTSnap = async (tokenName: string, tokenId: string) => {
     },
   });
   return withdrawSnap;
-}
+};

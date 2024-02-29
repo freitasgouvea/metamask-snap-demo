@@ -1,16 +1,15 @@
+import { providerErrors } from '@metamask/rpc-errors';
 import type { OnRpcRequestHandler } from '@metamask/snaps-sdk';
 import { DialogType, heading, panel, text } from '@metamask/snaps-sdk';
-import { providerErrors } from '@metamask/rpc-errors';
 import { bytesToHex, stringToBytes } from '@metamask/utils';
 import { sign } from '@noble/bls12-381';
+
 import { getEntropy } from './utils';
 
 /**
  * Handle incoming JSON-RPC requests, sent through `wallet_invokeSnap`.
  *
  * @param args - The request handler args as object.
- * @param args.origin - The origin of the request, e.g., the website that
- * invoked the snap.
  * @param args.request - A validated JSON-RPC request object.
  * @returns The result of `snap_dialog`.
  * @throws If the request method is not valid for this snap.
@@ -27,8 +26,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
             text(`Hello!`),
             text(
               `You will approve **NFT POOL** to spend your **${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 (request?.params as Record<string, any>)?.tokenName
               }** NFT with token ID **${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 (request?.params as Record<string, any>)?.tokenId
               }**.`,
             ),
@@ -50,8 +51,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
             ),
             text(
               `1 - You will deposit one NFT with token ID **${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 (request?.params as Record<string, any>)?.tokenId
               }** from **${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 (request?.params as Record<string, any>)?.tokenName
               }** Collection to the pool.`,
             ),
@@ -90,8 +93,10 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ request }) => {
             text(`Hello!`),
             text(
               `You will withdraw **${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 (request?.params as Record<string, any>)?.tokenName
               }** NFT with token ID **${
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                 (request?.params as Record<string, any>)?.tokenId
               }** from **NFT POOL**.`,
             ),
