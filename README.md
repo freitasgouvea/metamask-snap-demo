@@ -1,6 +1,8 @@
 # Metamask Snap Demo
 
-This repository is a fork of the [MetaMask template-snap-monorepo](https://github.com/MetaMask/template-snap-monorepo) and contains a demo application of a NFT Pool using the following technologies:
+This repository is a fork of the [MetaMask template-snap-monorepo](https://github.com/MetaMask/template-snap-monorepo) and utilizes a range of cutting-edge technologies to deliver a seamless decentralized experience.
+
+## Technologies
 
 - [Linea Network](https://docs.linea.build/)
 - [Infura](https://docs.infura.io/)
@@ -10,25 +12,23 @@ This repository is a fork of the [MetaMask template-snap-monorepo](https://githu
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 
-## Packages
+## Packages Overview
 
 ### contracts
 
-This package contains the smart contracts for the NFT Pool Demo and uses [Foundry](https://book.getfoundry.sh/) to build, test and deploy the smart contracts and is configured to interact with [Linea Network](https://docs.linea.build/) using [Infura](https://docs.infura.io/) as a RPC provider.
+The `contracts` package houses the smart contracts essential for our NFT Pool Demo. Leveraging [Foundry](https://book.getfoundry.sh/), for build, test, and deploy smart contracts seamlessly. The setup is configured to interact flawlessly with the [Linea Network](https://docs.linea.build/) using [Infura](https://docs.infura.io/) as an RPC provider.
 
 See full details in [contracts/README.md](./packages/contracts/README.md)
 
 ### site
 
-Contains the frontend application for the demo snap and was built using [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/)
-
-Has a set of [hooks](./packages/site/src/hooks) built to easily instantiate MetaMask wallet and interact with smart contracts deployed on the Linea Network. Also has a [snap file](./packages/site/src/utils/snap.tsx) to show how to integrate the frontend application with the snap.
+The `site` package contains the frontend application of our NFT Pool Demo, developed with [React](https://reactjs.org/) and [TypeScript](https://www.typescriptlang.org/). Within this package, you'll discover a collection of custom [hooks](./packages/site/src/hooks) designed to facilitate MetaMask wallet instantiation and interaction with smart contracts deployed on the Linea Network. Additionally, explore the [snap file](./packages/site/src/utils/snap.tsx) for insights on integrating the frontend application with the Snap feature.
 
 See full details in [site/README.md](./packages/site/README.md)
 
 ### snap
 
-This package was built using [TypeScript](https://www.typescriptlang.org/) and contains the snaps for the NFT Pool Demo.
+The `snap` package, crafted entirely in [TypeScript](https://www.typescriptlang.org/), houses the snaps for our NFT Pool Demo, demonstrating the innovative capabilities of MetaMask Snaps.
 
 See full details in [snap/README.md](./packages/snap/README.md)
 
