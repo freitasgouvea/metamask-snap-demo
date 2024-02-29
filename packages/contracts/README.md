@@ -8,8 +8,8 @@ This project uses [Foundry](https://book.getfoundry.sh/) to build, test and depl
 
 ### Linea Testnet
 
--   NFT: [0x56F25c991cCcD6c2171F2c1BE190608ab1f09369](https://goerli.lineascan.build/address/0x56F25c991cCcD6c2171F2c1BE190608ab1f09369)
--   NFTPool: [0x65356C52e55c9EBCDaeb5d9aCA15ff1E86f7669E](https://goerli.lineascan.build/address/0x65356C52e55c9EBCDaeb5d9aCA15ff1E86f7669E)
+- NFT: [0x56F25c991cCcD6c2171F2c1BE190608ab1f09369](https://goerli.lineascan.build/address/0x56F25c991cCcD6c2171F2c1BE190608ab1f09369)
+- NFTPool: [0x65356C52e55c9EBCDaeb5d9aCA15ff1E86f7669E](https://goerli.lineascan.build/address/0x65356C52e55c9EBCDaeb5d9aCA15ff1E86f7669E)
 
 ## Deploy to Linea Network using Foundry and Infura
 
@@ -59,10 +59,10 @@ To read more information about, please visit [Differences between Ethereum and L
 
 Foundry consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
 ## Documentation
 
