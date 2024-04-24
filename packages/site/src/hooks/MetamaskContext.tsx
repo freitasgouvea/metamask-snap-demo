@@ -83,15 +83,13 @@ const reducer: Reducer<MetamaskState, MetamaskDispatch> = (state, action) => {
  * @returns JSX.
  */
 export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
-  if (typeof window === 'undefined') {
-    return <>{children}</>;
-  }
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Find MetaMask Provider and search for Snaps
   // Also checks if MetaMask version is Flask
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const setSnapsCompatibility = async () => {
       dispatch({
         type: MetamaskActions.SetSnapsDetected,
@@ -104,6 +102,7 @@ export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
 
   // Set installed snaps
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     /**
      * Detect if a snap is installed and set it in the state.
      */
@@ -130,6 +129,8 @@ export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let errorTimeoutId: number;
 
+    if (typeof window === 'undefined') return;
+
     if (state.error) {
       errorTimeoutId = window.setTimeout(() => {
         dispatch({
@@ -149,6 +150,8 @@ export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     let successTimeoutId: number;
 
+    if (typeof window === 'undefined') return;
+
     if (state.success) {
       successTimeoutId = window.setTimeout(() => {
         dispatch({
@@ -167,6 +170,7 @@ export const MetaMaskProvider = ({ children }: { children: ReactNode }) => {
 
   // Switch to Linea network
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     /**
      * Check if the current network is Linea and switch to it if it's not.
      */
